@@ -52,5 +52,5 @@
 @synthesize delay;
 @synthesize alpha;
 @synthesize originY;
-
+@synthesize originX;
 @end

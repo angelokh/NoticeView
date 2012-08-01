@@ -13,7 +13,8 @@
 typedef enum {
     WBNoticeViewTypeError = 0,
     WBNoticeViewTypeSuccess,
-    WBNoticeViewTypeSticky
+    WBNoticeViewTypeSticky,
+    WBNoticeViewTypeSlideFromRight
 } WBNoticeViewType;
 
 + (WBNoticeView *)defaultManager;

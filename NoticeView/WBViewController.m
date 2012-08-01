@@ -30,6 +30,7 @@
 #import "WBErrorNoticeView.h"
 #import "WBSuccessNoticeView.h"
 #import "WBStickyNoticeView.h"
+#import "WBSlideFromRightView.h"
 
 @interface WBViewController ()
 
@@ -141,6 +142,12 @@
     [notice show];
     
     [self.navigationController pushViewController: [[WBViewController alloc] init] animated:YES];
+}
+
+- (IBAction)showSlideFromRightNotice:(id)sender
+{
+    WBSlideFromRightView *notice = [WBSlideFromRightView slideFromRightNoticeInView:self.view title:@"Load Friends"];
+    [notice show];
 }
 
 @end

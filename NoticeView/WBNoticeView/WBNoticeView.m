@@ -25,6 +25,7 @@
 @property(nonatomic, assign) CGFloat _delay;
 @property(nonatomic, assign) CGFloat _alpha;
 @property(nonatomic, assign) CGFloat _hiddenYOrigin;
+@property(nonatomic, assign) CGFloat _hiddenXOrigin;
 @property(nonatomic, strong) WBNoticeView *_currentNotice;
 
 - (void)_showErrorNoticeInView:(UIView *)view
@@ -42,6 +43,14 @@
                          delay:(float)delay
                          alpha:(float)alpha
                          yOrigin:(CGFloat)origin;
+
+- (void)_showSlideFromRightNoticeInView:(UIView *)view
+                                  title:(NSString *)title
+                                message:(NSString *)message
+                               duration:(float)duration
+                                  delay:(float)delay
+                                  alpha:(float)alpha
+                                xOrigin:(CGFloat)origin;
 
 - (void)_showStickyNoticeInView:(UIView *)view
                          title:(NSString *)title
@@ -74,6 +83,7 @@
 @synthesize _delay;
 @synthesize _alpha;
 @synthesize _hiddenYOrigin;
+@synthesize _hiddenXOrigin;
 @synthesize _currentNotice;
 
 + (WBNoticeView *)defaultManager
@@ -100,7 +110,7 @@
                    duration:0.0
                       delay:0.0
                       alpha:0.8
-                    yOrigin:0.0];
+                    origin:0.0];
 }
 
 - (void)showErrorNoticeInView:(UIView *)view
@@ -117,7 +127,7 @@
                    duration:duration
                       delay:delay
                       alpha:alpha
-                    yOrigin:0.0];
+                    origin:0.0];
 }
 
 - (void)showErrorNoticeInView:(UIView *)view
@@ -135,7 +145,7 @@
                    duration:duration
                       delay:delay
                       alpha:alpha
-                    yOrigin:origin];
+                    origin:origin];
 }
 
 #pragma mark -
@@ -150,7 +160,7 @@
                    duration:0.0
                       delay:0.0
                       alpha:0.8
-                    yOrigin:0.0];
+                    origin:0.0];
 }
 
 - (void)showSuccessNoticeInView:(UIView *)view
@@ -166,7 +176,7 @@
                    duration:duration
                       delay:delay
                       alpha:alpha
-                    yOrigin:0.0];
+                    origin:0.0];
 }
 
 - (void)showSuccessNoticeInView:(UIView *)view
@@ -183,7 +193,22 @@
                    duration:duration
                       delay:delay
                       alpha:alpha
-                    yOrigin:origin];
+                    origin:origin];
+}
+
+#pragma mark -
+
+- (void)showSlideFromRightNoticeInView:(UIView *)view
+                               message:(NSString *)message
+{
+    [self _showNoticeOfType:WBNoticeViewTypeSlideFromRight
+                       view:view
+                      title:message
+                    message:nil
+                   duration:0.0
+                      delay:0.0
+                      alpha:0.8
+                     origin:0.0];
 }
 
 #pragma mark -
@@ -201,7 +226,7 @@
                    duration:duration
                       delay:0.0
                       alpha:alpha
-                    yOrigin:origin];
+                    origin:origin];
 }
 
 #pragma mark - Private Section
@@ -213,7 +238,7 @@
                  duration:(float)duration
                     delay:(float)delay
                     alpha:(float)alpha
-                  yOrigin:(CGFloat)origin
+                  origin:(CGFloat)origin
 {
     if (nil == self.noticeView) {
         
@@ -232,6 +257,10 @@
                 
             case WBNoticeViewTypeSuccess:
                 [self _showSuccessNoticeInView:view title:title message:message duration:duration delay:delay alpha:alpha yOrigin:origin];
+                break;
+            
+            case WBNoticeViewTypeSlideFromRight:
+                [self _showSlideFromRightNoticeInView:view title:title message:message duration:duration delay:delay alpha:alpha xOrigin:origin];
                 break;
                 
             case WBNoticeViewTypeSticky:
@@ -405,6 +434,71 @@
     [self displayNoticeOfType:WBNoticeViewTypeSuccess duration:duration delay:delay origin:origin hiddenYOrigin:hiddenYOrigin alpha:alpha];
 }
 
+- (void)_showSlideFromRightNoticeInView:(UIView *)view
+                                  title:(NSString *)title
+                                message:(NSString *)message
+                               duration:(float)duration
+                                  delay:(float)delay
+                                  alpha:(float)alpha
+                                xOrigin:(CGFloat)origin
+{
+    // Obtain the screen width
+    CGFloat viewWidth = view.frame.size.width;
+    
+    // Locate the images
+    NSString *path = [[[NSBundle mainBundle]resourcePath]stringByAppendingPathComponent:@"NoticeView.bundle"];
+    NSString *noticeIconImageName = [path stringByAppendingPathComponent:@"notice_success_icon.png"];
+    
+    NSInteger numberOfLines = 1;
+    CGFloat messageLineHeight = 30.0;
+    
+    // Make and add the title label
+    float titleYOrigin = 18.0;
+    self.titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(55.0, titleYOrigin, viewWidth - 70.0, 16.0)];
+    self.titleLabel.textColor = [UIColor whiteColor];
+    self.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+    self.titleLabel.shadowColor = [UIColor blackColor];
+    self.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
+    self.titleLabel.backgroundColor = [UIColor clearColor];
+    self.titleLabel.text = title;
+    
+    // Calculate the notice view height
+    float noticeViewHeight = 40.0;
+    float hiddenXOrigin = 320.0;
+    if (numberOfLines > 1) {
+        noticeViewHeight += (numberOfLines - 1) * messageLineHeight;
+    }
+    
+    // Make and add the notice view
+    self.noticeView = [[WBBlueGradientView alloc]initWithFrame:CGRectMake(hiddenXOrigin, 0.0, viewWidth, noticeViewHeight + 10.0)];
+    [view addSubview:self.noticeView];
+    
+    // Make and add the icon view
+    UIImageView *iconView = [[UIImageView alloc]initWithFrame:CGRectMake(10.0, 10.0, 20.0, 30.0)];
+    iconView.image = [UIImage imageWithContentsOfFile:noticeIconImageName];
+    iconView.contentMode = UIViewContentModeScaleAspectFit;
+    iconView.alpha = 0.8;
+    [self.noticeView addSubview:iconView];
+    
+    // Add the title label
+    [self.noticeView addSubview:self.titleLabel];
+    
+    // Add the drop shadow to the notice view
+    CALayer *noticeLayer = self.noticeView.layer;
+    noticeLayer.shadowColor = [[UIColor blackColor]CGColor];
+    noticeLayer.shadowOffset = CGSizeMake(0.0, 3);
+    noticeLayer.shadowOpacity = 0.50;
+    noticeLayer.masksToBounds = NO;
+    noticeLayer.shouldRasterize = YES;
+    
+    self._duration = duration;
+    self._delay = delay;
+    self._alpha = alpha;
+    self._hiddenXOrigin = hiddenXOrigin;
+    
+    [self displayNoticeOfType:WBNoticeViewTypeSlideFromRight duration:duration delay:delay origin:origin hiddenXOrigin:hiddenXOrigin alpha:alpha];
+}
+
 - (void)_showStickyNoticeInView:(UIView *)view
                           title:(NSString *)title
                         message:(NSString *)message
@@ -517,11 +611,43 @@
     }];
 }
 
+- (void)displayNoticeOfType:(WBNoticeViewType)noticeType duration:(CGFloat)duration delay:(CGFloat)delay origin:(CGFloat)origin hiddenXOrigin:(CGFloat)hiddenXOrigin alpha:(CGFloat)alpha
+{
+    // Go ahead, display it
+    [UIView animateWithDuration:duration animations:^ {
+        CGRect newFrame = self.noticeView.frame;
+        newFrame.origin.x = origin;
+        self.noticeView.frame = newFrame;
+        self.noticeView.alpha = alpha;
+    } completion:^ (BOOL finished) {
+        if (finished) {
+            // if it's not sticky, hide it automatically
+            if (WBNoticeViewTypeSlideFromRight == noticeType) {
+                [self dismissNoticeOfType:noticeType duration:duration delay:delay hiddenXOrigin:hiddenXOrigin];  
+            }
+        }
+    }];
+}
+
 - (void)dismissNoticeOfType:(WBNoticeViewType)noticeType duration:(CGFloat)duration delay:(CGFloat)delay hiddenYOrigin:(CGFloat)hiddenYOrigin
 {
     [UIView animateWithDuration:duration delay:delay options:UIViewAnimationOptionCurveEaseOut animations:^ {
         CGRect newFrame = self.noticeView.frame;
         newFrame.origin.y = hiddenYOrigin;
+        self.noticeView.frame = newFrame;
+    } completion:^ (BOOL finished) {
+        if (finished) {  
+            // Cleanup
+            [self cleanup];
+        }
+    }];
+}
+
+- (void)dismissNoticeOfType:(WBNoticeViewType)noticeType duration:(CGFloat)duration delay:(CGFloat)delay hiddenXOrigin:(CGFloat)hiddenXOrigin
+{
+    [UIView animateWithDuration:duration delay:delay options:UIViewAnimationOptionCurveEaseOut animations:^ {
+        CGRect newFrame = self.noticeView.frame;
+        newFrame.origin.x = hiddenXOrigin;
         self.noticeView.frame = newFrame;
     } completion:^ (BOOL finished) {
         if (finished) {  

@@ -20,7 +20,7 @@
                  duration:(float)duration
                     delay:(float)delay
                     alpha:(float)alpha
-                  yOrigin:(CGFloat)origin;
+                  origin:(CGFloat)origin;
 
 - (void)_showErrorNoticeInView:(UIView *)view
                          title:(NSString *)title

@@ -29,7 +29,7 @@
                    duration:self.duration
                       delay:0.0
                       alpha:self.alpha
-                    yOrigin:self.originY];
+                     origin:self.originY];
 }
 
 @end

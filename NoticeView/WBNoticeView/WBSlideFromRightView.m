@@ -1,35 +1,36 @@
 //
-//  WBSuccessNoticeView.m
+//  WBSlideFromRightView.m
 //  NoticeView
 //
-//  Created by Tito Ciuro on 5/25/12.
+//  Created by Macbook Pro on 8/1/12.
 //  Copyright (c) 2012 Tito Ciuro. All rights reserved.
 //
 
+#import "WBSlideFromRightView.h"
 #import "WBSuccessNoticeView.h"
 #import "WBNoticeView_Private.h"
 
-@implementation WBSuccessNoticeView
+@implementation WBSlideFromRightView
 
 @synthesize title;
 
-+ (WBSuccessNoticeView *)successNoticeInView:(UIView *)view title:(NSString *)title
++ (WBSlideFromRightView *)slideFromRightNoticeInView:(UIView *)view title:(NSString *)title
 {
-    WBSuccessNoticeView *notice = [[WBSuccessNoticeView alloc]initWithView:view title:title];
-
+    WBSlideFromRightView *notice = [[WBSlideFromRightView alloc]initWithView:view title:title];
+    
     return notice;
 }
 
 - (void)show
 {
-    [self _showNoticeOfType:WBNoticeViewTypeSuccess
+    [self _showNoticeOfType:WBNoticeViewTypeSlideFromRight
                        view:self.view
                       title:self.title
                     message:nil
                    duration:self.duration
                       delay:self.delay
                       alpha:self.alpha
-                     origin:self.originY];
+                     origin:self.originX];
 }
 
 @end

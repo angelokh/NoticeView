@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		52DF734115C910DC00E5F806 /* WBSlideFromRightView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52DF734015C910DC00E5F806 /* WBSlideFromRightView.m */; };
 		592BDDE915645BEE00B78820 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 592BDDE115645BEE00B78820 /* Default.png */; };
 		592BDDEA15645BEE00B78820 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 592BDDE215645BEE00B78820 /* Default@2x.png */; };
 		592BDDEB15645BEE00B78820 /* NoticeView.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 592BDDE415645BEE00B78820 /* NoticeView.bundle */; };
@@ -32,6 +33,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		52DF733F15C910DC00E5F806 /* WBSlideFromRightView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBSlideFromRightView.h; sourceTree = "<group>"; };
+		52DF734015C910DC00E5F806 /* WBSlideFromRightView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBSlideFromRightView.m; sourceTree = "<group>"; };
 		592BDDE115645BEE00B78820 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		592BDDE215645BEE00B78820 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		592BDDE415645BEE00B78820 /* NoticeView.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = NoticeView.bundle; sourceTree = "<group>"; };
@@ -99,6 +102,8 @@
 		592BDDE315645BEE00B78820 /* WBNoticeView */ = {
 			isa = PBXGroup;
 			children = (
+				52DF733F15C910DC00E5F806 /* WBSlideFromRightView.h */,
+				52DF734015C910DC00E5F806 /* WBSlideFromRightView.m */,
 				746CBCFE1570A1D100B844B1 /* WBErrorNoticeView.h */,
 				746CBCFF1570A1D100B844B1 /* WBErrorNoticeView.m */,
 				746CBD061570A8FA00B844B1 /* WBSuccessNoticeView.h */,
@@ -265,6 +270,7 @@
 				7492FA46157C8CD700FB834C /* WBRedGradientView.m in Sources */,
 				748A6A59157D0B74003C7655 /* WBGrayGradientView.m in Sources */,
 				748A6A5D157D0D06003C7655 /* WBStickyNoticeView.m in Sources */,
+				52DF734115C910DC00E5F806 /* WBSlideFromRightView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

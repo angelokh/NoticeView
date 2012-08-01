@@ -31,7 +31,7 @@
                    duration:self.duration
                       delay:self.delay
                       alpha:self.alpha
-                    yOrigin:self.originY];
+                     origin:self.originY];
 }
 
 @end
