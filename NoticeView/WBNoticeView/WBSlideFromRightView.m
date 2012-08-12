@@ -16,8 +16,7 @@
 
 + (WBSlideFromRightView *)slideFromRightNoticeInView:(UIView *)view title:(NSString *)title
 {
-    WBSlideFromRightView *notice = [[WBSlideFromRightView alloc]initWithView:view title:title];
-    
+    WBSlideFromRightView* notice = [[WBSlideFromRightView alloc]initWithView:view title:title];
     return notice;
 }
 

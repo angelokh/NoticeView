@@ -17,6 +17,8 @@ typedef enum {
     WBNoticeViewTypeSlideFromRight
 } WBNoticeViewType;
 
+@property (nonatomic, assign) BOOL isActive;
+
 + (WBNoticeView *)defaultManager;
 
 // Error notice methods

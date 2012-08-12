@@ -32,6 +32,8 @@
 #import "WBStickyNoticeView.h"
 #import "WBSlideFromRightView.h"
 
+static WBSlideFromRightView *rightNotice;
+
 @interface WBViewController ()
 
 @end
@@ -146,8 +148,12 @@
 
 - (IBAction)showSlideFromRightNotice:(id)sender
 {
-    WBSlideFromRightView *notice = [WBSlideFromRightView slideFromRightNoticeInView:self.view title:@"Load Friends"];
-    [notice show];
+    if (!rightNotice) {
+        rightNotice = [WBSlideFromRightView slideFromRightNoticeInView:self.view title:@"Load Friends"];
+    }
+    if (!rightNotice.isActive) {
+        [rightNotice show]; // only one show at a time
+    }
 }
 
 @end

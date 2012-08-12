@@ -85,6 +85,7 @@
 @synthesize _hiddenYOrigin;
 @synthesize _hiddenXOrigin;
 @synthesize _currentNotice;
+@synthesize isActive = _isActive;
 
 + (WBNoticeView *)defaultManager
 {
@@ -496,7 +497,12 @@
     self._alpha = alpha;
     self._hiddenXOrigin = hiddenXOrigin;
     
-    [self displayNoticeOfType:WBNoticeViewTypeSlideFromRight duration:duration delay:delay origin:origin hiddenXOrigin:hiddenXOrigin alpha:alpha];
+    [self displayNoticeOfType:WBNoticeViewTypeSlideFromRight 
+                     duration:duration 
+                        delay:delay 
+                       origin:origin
+                hiddenXOrigin:hiddenXOrigin 
+                        alpha:alpha];
 }
 
 - (void)_showStickyNoticeInView:(UIView *)view
@@ -611,8 +617,15 @@
     }];
 }
 
-- (void)displayNoticeOfType:(WBNoticeViewType)noticeType duration:(CGFloat)duration delay:(CGFloat)delay origin:(CGFloat)origin hiddenXOrigin:(CGFloat)hiddenXOrigin alpha:(CGFloat)alpha
+- (void)displayNoticeOfType:(WBNoticeViewType)noticeType 
+                   duration:(CGFloat)duration 
+                      delay:(CGFloat)delay 
+                     origin:(CGFloat)origin 
+              hiddenXOrigin:(CGFloat)hiddenXOrigin 
+                      alpha:(CGFloat)alpha
 {
+    self.isActive = YES;// indicate this is active now
+    
     // Go ahead, display it
     [UIView animateWithDuration:duration animations:^ {
         CGRect newFrame = self.noticeView.frame;
@@ -623,7 +636,10 @@
         if (finished) {
             // if it's not sticky, hide it automatically
             if (WBNoticeViewTypeSlideFromRight == noticeType) {
-                [self dismissNoticeOfType:noticeType duration:duration delay:delay hiddenXOrigin:hiddenXOrigin];  
+                [self dismissNoticeOfType:noticeType 
+                                 duration:duration 
+                                    delay:delay
+                            hiddenXOrigin:hiddenXOrigin];  
             }
         }
     }];
@@ -643,16 +659,20 @@
     }];
 }
 
-- (void)dismissNoticeOfType:(WBNoticeViewType)noticeType duration:(CGFloat)duration delay:(CGFloat)delay hiddenXOrigin:(CGFloat)hiddenXOrigin
+- (void)dismissNoticeOfType:(WBNoticeViewType)noticeType 
+                   duration:(CGFloat)duration 
+                      delay:(CGFloat)delay 
+              hiddenXOrigin:(CGFloat)hiddenXOrigin
 {
     [UIView animateWithDuration:duration delay:delay options:UIViewAnimationOptionCurveEaseOut animations:^ {
         CGRect newFrame = self.noticeView.frame;
         newFrame.origin.x = hiddenXOrigin;
         self.noticeView.frame = newFrame;
     } completion:^ (BOOL finished) {
-        if (finished) {  
+        if (finished) { 
             // Cleanup
             [self cleanup];
+            self.isActive = NO;
         }
     }];
 }
